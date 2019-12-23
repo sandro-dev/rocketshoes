@@ -1,100 +1,49 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { MdAddShoppingCart } from 'react-icons/md';
+import api from '../../services/api';
+
+import { formatPrice } from '../../util/format';
+
 import { ProductList } from './styles';
 
-export default function Home() {
-  return (
-    <ProductList>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-court-royale-suede/26/D12-2751-026/D12-2751-026_detalhe1.jpg?ims=240x240"
-          alt="Tênis Nike"
-        />
-        <strong>Tênis Nike Court Royale</strong>
-        <span>R$ 149,99</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+export default class Home extends Component {
+  state = {
+    products: [],
+  };
 
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-court-royale-suede/26/D12-2751-026/D12-2751-026_detalhe1.jpg?ims=240x240"
-          alt="Tênis Nike"
-        />
-        <strong>Tênis Nike Court Royale</strong>
-        <span>R$ 149,99</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+  async componentDidMount() {
+    const response = await api.get('/products');
 
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-court-royale-suede/26/D12-2751-026/D12-2751-026_detalhe1.jpg?ims=240x240"
-          alt="Tênis Nike"
-        />
-        <strong>Tênis Nike Court Royale</strong>
-        <span>R$ 149,99</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+    const data = response.data.map(product => ({
+      ...product,
+      priceFormatted: formatPrice(product.price),
+    }));
 
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-court-royale-suede/26/D12-2751-026/D12-2751-026_detalhe1.jpg?ims=240x240"
-          alt="Tênis Nike"
-        />
-        <strong>Tênis Nike Court Royale</strong>
-        <span>R$ 149,99</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+    this.setState({
+      products: data,
+    });
+  }
 
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-court-royale-suede/26/D12-2751-026/D12-2751-026_detalhe1.jpg?ims=240x240"
-          alt="Tênis Nike"
-        />
-        <strong>Tênis Nike Court Royale</strong>
-        <span>R$ 149,99</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+  render() {
+    const { products } = this.state;
 
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-court-royale-suede/26/D12-2751-026/D12-2751-026_detalhe1.jpg?ims=240x240"
-          alt="Tênis Nike"
-        />
-        <strong>Tênis Nike Court Royale</strong>
-        <span>R$ 149,99</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-    </ProductList>
-  );
+    return (
+      <ProductList>
+        {products.map(product => (
+          <li key={product.id}>
+            <img src={product.image} alt={product.title} />
+            <strong>{product.title}</strong>
+            <span>{product.priceFormatted}</span>
+            <button type="button">
+              <div>
+                <MdAddShoppingCart size={16} color="#fff" />
+              </div>
+              <span>ADICIONAR AO CARRINHO</span>
+            </button>
+          </li>
+        ))}
+      </ProductList>
+    );
+  }
 }
