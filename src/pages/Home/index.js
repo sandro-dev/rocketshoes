@@ -21,7 +21,7 @@ export default function Home() {
         </button>
       </li>
 
-<li>
+      <li>
         <img
           src="https://static.netshoes.com.br/produtos/tenis-nike-court-royale-suede/26/D12-2751-026/D12-2751-026_detalhe1.jpg?ims=240x240"
           alt="Tênis Nike"
